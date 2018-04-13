@@ -22,30 +22,17 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference messageRef = database.getReference("messages");
         DatabaseReference usersRef = database.getReference("users");
 
-        // Read from the database
-        //These are called automatically from Firebase whenever the database changes
-        messageRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                System.out.println(dataSnapshot.toString());
-                for(DataSnapshot child : dataSnapshot.getChildren())
-                {
-                    Message value = child.getValue(Message.class);
-                    value.display();
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                System.out.println("********* Failed to read value. " + error.toException());
-            }
-        });
+        // Read from the database
+
+        MessageListener messageList = new MessageListener();
+        messageRef.addValueEventListener(messageList);
+
+        //These are called automatically from Firebase whenever the database change
 
         //These are called automatically from Firebase whenever the database changes
         usersRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -66,15 +53,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Write to database
-        for(int i = 0; i < 10; i++)
-        {
-            //push() gets a unique key for this entry
-            DatabaseReference tempMsg = messageRef.push();
-            Message msg = new Message("Title " + i, "Body " + i);
-            tempMsg.setValue(msg);
-        }
-
         Random r = new Random();
         for(int i = 0; i < 10; i++)
         {
@@ -84,5 +62,6 @@ public class MainActivity extends AppCompatActivity {
             tempUser.setValue(usr);
 
         }
+
     }
 }

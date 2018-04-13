@@ -6,7 +6,6 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-@IgnoreExtraProperties
 public class Message
 {
     public String title;
@@ -20,14 +19,6 @@ public class Message
     {
         this.title = title;
         this.body = body;
-    }
-
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("title", title);
-        result.put("body", body);
-        return result;
     }
 
     public void display()
